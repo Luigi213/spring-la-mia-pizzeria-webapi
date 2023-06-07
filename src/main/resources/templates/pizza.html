@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body th:object="${pizza}">
+
+	<div>
+		<h1>Pizza</h1>
+		<h3>[[ *{name} ]]</h3>
+		<h4>Description: [[ *{description} ]]</h4>
+		<img th:src="*{urlPhoto}">
+		<h4>Price: [[ *{formatPrice} ]]</h4>
+		<h2>Offerte</h2>
+		<a th:href="@{/new-offerte/create/{id} (id=*{id})}" sec:authorize="hasAuthority('ADMIN')">New offerta</a>
+		<ul>
+			<li th:each="offerte : ${pizzaOfferte}">
+				[[ ${offerte} ]] 
+				<a th:href="@{/new-offerte/update/{id} (id=${offerte.id})}" sec:authorize="hasAuthority('ADMIN')">Modifica</a>
+			</li>		
+		</ul>
+	</div>
+</body>
+</html>

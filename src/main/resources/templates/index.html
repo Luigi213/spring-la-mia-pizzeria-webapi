@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Pizzas</h1>
+	<a
+		href="/logout"
+	>LOGOUT</a>
+	<div>
+		Authenticated username:
+	    <div sec:authentication="name"></div>
+	    Authenticated user roles:
+	    <div sec:authentication="principal.authorities"></div>	
+	</div>
+	<a th:href="@{/pizza/create}" sec:authorize="hasAuthority('ADMIN')">Create pizza</a>
+	<form th:action="@{/pizza/by/name}" method="POST">
+		<input type="text" name="name">
+		<input type="submit" value="Search"> 
+	</form>
+	<ul>
+		<li
+			th:each="pizza : ${pizzas}"
+			th:object="${pizza}"
+		>
+			<a th:href="@{/pizza/{id} (id=*{id})}">
+				[[ *{name} ]]
+			</a>
+			<a th:href="@{/pizza/delete/{id} (id=*{id})}" sec:authorize="hasAuthority('ADMIN')">
+				delete
+			</a>
+			<a th:href="@{/pizza/update/{id} (id=*{id})}" sec:authorize="hasAuthority('ADMIN')">
+				update
+			</a>
+		</li>
+	</ul>
+	<h2 th:if="${pizzas.isEmpty()}">there are no pizzas</h2>
+</body>
+</html>
