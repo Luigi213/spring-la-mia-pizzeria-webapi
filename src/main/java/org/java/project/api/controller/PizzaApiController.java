@@ -77,7 +77,6 @@ public class PizzaApiController {
 			@RequestBody Pizza pizza
 			){
 
-		System.err.println(pizza);
 		pizza = servicePizza.save(pizza);
 		
 		return new ResponseEntity<>(
@@ -89,7 +88,7 @@ public class PizzaApiController {
 	public ResponseEntity<PizzaResponseDto> deletePizza(
 			@PathVariable Integer id
 		) {
-		System.err.println(id);
+
 		Optional<Pizza> optPizza = servicePizza.findById(id);
 		
 		if (optPizza.isEmpty()) {
