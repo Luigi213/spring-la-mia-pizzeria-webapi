@@ -3,6 +3,8 @@ package org.java.project.pojo;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class Pizza {
 	private double price;
 	
 	@OneToMany(mappedBy="pizza")
+	@JsonBackReference
 	private List<Offerte> Offerte;
 	
 	@ManyToMany
@@ -41,7 +44,7 @@ public class Pizza {
 		setUrlPhoto(urlPhoto);
 		setPrice(price);
 		
-		setIngredientes(ingredientes);
+		setIngrediente(ingredientes);
 	}
 
 	public int getId() {
@@ -86,7 +89,7 @@ public class Pizza {
 	public void setIngredientes(List<Ingrediente> ingredientes) {
 		this.ingredientes = ingredientes;
 	}
-	public void setIngredientes(Ingrediente[] ingredientes) {
+	public void setIngrediente(Ingrediente[] ingredientes) {
 		setIngredientes(Arrays.asList(ingredientes));
 	}
 	public void addIngrediente(Ingrediente ingrediente) {

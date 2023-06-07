@@ -2,6 +2,8 @@ package org.java.project.pojo;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,7 @@ public class Ingrediente {
 	private String nomeIngrediente;
 	
 	@ManyToMany(mappedBy="ingredientes")
+	@JsonBackReference
 	private List<Pizza> pizza;
 	
 	public Ingrediente() {}
