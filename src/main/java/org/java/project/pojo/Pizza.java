@@ -3,9 +3,9 @@ package org.java.project.pojo;
 import java.util.Arrays;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,10 +16,6 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@JsonIdentityInfo(
-	    generator = ObjectIdGenerators.PropertyGenerator.class,
-	    property = "id"
-	)
 public class Pizza {
 	
 	@Id
@@ -35,7 +31,7 @@ public class Pizza {
 	@DecimalMin(value = "0.1", message = "price can't be 0")
 	private double price;
 	
-	@OneToMany(mappedBy="pizza")
+	@OneToMany(mappedBy="pizza", cascade= CascadeType.REMOVE)
 	private List<Offerte> Offerte;
 	
 	@ManyToMany
@@ -48,7 +44,7 @@ public class Pizza {
 		setUrlPhoto(urlPhoto);
 		setPrice(price);
 		
-		setIngrediente(ingredientes);
+		setIngredientes(ingredientes);
 	}
 
 	public int getId() {
@@ -90,10 +86,11 @@ public class Pizza {
 	public List<Ingrediente> getIngredientes() {
 		return ingredientes;
 	}
+	@JsonSetter
 	public void setIngredientes(List<Ingrediente> ingredientes) {
 		this.ingredientes = ingredientes;
 	}
-	public void setIngrediente(Ingrediente[] ingredientes) {
+	public void setIngredientes(Ingrediente[] ingredientes) {
 		setIngredientes(Arrays.asList(ingredientes));
 	}
 	public void addIngrediente(Ingrediente ingrediente) {

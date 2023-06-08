@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.java.project.api.controller.dto.PizzaResponseDto;
-import org.java.project.pojo.Offerte;
 import org.java.project.pojo.Pizza;
-import org.java.project.serv.ServiceOfferte;
 import org.java.project.serv.ServicePizza;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,16 +29,13 @@ public class PizzaApiController {
 	@Autowired
 	private ServicePizza servicePizza;
 	
-	@Autowired
-	private ServiceOfferte serviceOfferte;
-	
 	@GetMapping("/pizzas")
 	public ResponseEntity<List<Pizza>> getPizzas(
 			@RequestParam(required = false) String name
 			) {
 		
 		List<Pizza> pizzas = servicePizza.findAll();
-		System.out.println(pizzas);
+
 		if(name == null) {
 			return new ResponseEntity<>(pizzas, HttpStatus.OK);
 		} else if(!name.isEmpty()) {			
@@ -95,12 +91,10 @@ public class PizzaApiController {
 			
 			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);	
 		}
-		
-		
 		Pizza pizza = optPizza.get();
-		for(Offerte offerta : pizza.getOfferte()) {
-			serviceOfferte.delete(offerta);
-		}
+		
+		pizza.getIngredientes().clear();
+		servicePizza.save(pizza);
 		servicePizza.delete(pizza);
 		
 		return new ResponseEntity<>(
